@@ -1,5 +1,63 @@
-﻿<h3>GreetingCard</h3>
+﻿@page "/greeting"
+
+<div class="greeting-container">
+    <div class="card">
+        <div class="card-header">
+            <h2>Interactive Blazor Binding</h2>
+            <p>Experience real-time data binding in .NET 10</p>
+        </div>
+
+        <div class="form-group">
+            <label for="username">Enter Your Name</label>
+            <div class="input-wrapper">
+                <input id="username"
+                       type="text"
+                       @bind="UserName"
+                       @bind:event="oninput"
+                       placeholder="Type something..."
+                       class="custom-input" />
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="display-section">
+            <div class="display-box dynamic">
+                <span class="badge dynamic-badge">Two-Way (Live)</span>
+                @if (string.IsNullOrWhiteSpace(UserName))
+                {
+                    <p class="placeholder-text">Waiting for you to type...</p>
+                }
+                else
+                {
+                    <h3>Hello, <span class="highlight">@UserName</span>! Welcome aboard.</h3>
+                }
+            </div>
+
+            <div class="display-box static">
+                <span class="badge static-badge">One-Way (Fixed)</span>
+                <h3>System Status: <span class="status-text">@SystemStatus</span></h3>
+            </div>
+        </div>
+
+        <button class="btn-refresh" @onclick="UpdateStatus">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
+            </svg>
+            Refresh System Status
+        </button>
+    </div>
+</div>
 
 @code {
+    private string UserName { get; set; } = string.Empty;
+    private string SystemStatus { get; set; } = "Ready and Optimized";
 
+    private void UpdateStatus()
+    {
+        string[] statuses = { "System Core Active", "UI Rendered Smoothly", "Data Pipelines Nominal", ".NET 10 Running Fast" };
+        var random = new Random();
+        SystemStatus = statuses[random.Next(statuses.Length)];
+    }
 }
